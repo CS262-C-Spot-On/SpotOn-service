@@ -18,7 +18,7 @@ router.use(express.json());
 
 router.get("/", readHelloMessage);
 router.get("/users", readUsers);
-router.get("/users/:email", readUser);
+router.get("/users/:emailAddress", readUser);
 // router.put("/users/:email", updateUser);
 router.post('/users', createUser);
 // router.delete('/players/:id', deleteUser);
@@ -51,7 +51,7 @@ function readHelloMessage(req, res) {
 }
 
 function readUser(req, res, next) {
-    db.oneOrNone('SELECT * FROM Users WHERE email=${email}', req.params)
+    db.oneOrNone('SELECT * FROM Users WHERE emailAddress=${emailAddress}', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
