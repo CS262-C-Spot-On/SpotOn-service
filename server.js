@@ -37,11 +37,11 @@ function returnDataOr404(res, data) {
 }
 
 function readHelloMessage(req, res) {
-    res.send('Hello, Welcome to SpotOn');
+    res.send('Hello, Welcome to SpotOn!!!');
 }
 
  function readUsers(req, res, next) {
-    db.many("SELECT * FROM LogIn")
+    db.many("SELECT * FROM Users")
         .then(data => {
             res.send(data);
         })
@@ -51,7 +51,7 @@ function readHelloMessage(req, res) {
 }
 
 function readUser(req, res, next) {
-    db.oneOrNone('SELECT * FROM LogIn WHERE email=${email}', req.params)
+    db.oneOrNone('SELECT * FROM Users WHERE email=${email}', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -71,7 +71,7 @@ function readUser(req, res, next) {
 // }
 
 function createUser(req, res, next) {
-    db.one('INSERT INTO LogIn(emailaddress, password) VALUES (${emailaddress}, ${password}) RETURNING emailaddress', req.body)
+    db.one('INSERT INTO Users(emailaddress, password) VALUES (${emailaddress}, ${password}) RETURNING emailaddress', req.body)
         .then(data => {
             res.send(data);
         })
@@ -82,7 +82,7 @@ function createUser(req, res, next) {
 // async function insertUser(email, password) {
 //   try {
 //     const query = `
-//       INSERT INTO LogIn (email, password)
+//       INSERT INTO Users (email, password)
 //       VALUES ($1, $2)
 //       RETURNING email;`;
 
