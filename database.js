@@ -1,20 +1,20 @@
-const { Client } = require("pg");
-const fs = require("fs");
+const { Client } = require('pg');
+const fs = require('fs');
 
-var sql = fs.readFileSync("sql/SpotOn.sql").toString();
+const sql = fs.readFileSync('sql/SpotOn.sql').toString();
 
 const client = new Client({
   connectionString:
-  "postgres://asujfwrs:Rqa9fVu2WFPXhaMeIKKTvsqR-eqKGqlq@otto.db.elephantsql.com/asujfwrs"
+  'postgres://asujfwrs:Rqa9fVu2WFPXhaMeIKKTvsqR-eqKGqlq@otto.db.elephantsql.com/asujfwrs',
 });
-console.log("Connecting to database...");
-client.connect(function (err) {
+console.log('Connecting to database...');
+client.connect((err) => {
   if (err) throw err;
-  client.query(sql, function (err, result) {
+  client.query(sql, (err, result) => {
     if (err) throw err;
-    console.log("Database created");
+    console.log('Database created');
   });
-  console.log("Connected!");
+  console.log('Connected!');
 });
 
 module.exports = client;
