@@ -1,4 +1,4 @@
-const pgp = require('pg-promise')();
+const pgp = require("pg-promise")();
 
 const db = pgp({
   host: process.env.DB_SERVER,
@@ -10,7 +10,7 @@ const db = pgp({
 
 // Configure the server and its routes.
 
-const express = require('express');
+const express = require("express");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,11 +18,11 @@ const port = process.env.PORT || 3000;
 const router = express.Router();
 router.use(express.json());
 
-router.get('/', readHelloMessage);
-router.get('/users', readUsers);
-router.get('/users/:emailAddress', readUser);
+router.get("/", readHelloMessage);
+router.get("/users", readUsers);
+router.get("/users/:emailAddress", readUser);
 // router.put("/users/:email", updateUser);
-router.post('/users', createUser);
+router.post("/users", createUser);
 // router.delete('/players/:id', deleteUser);
 
 app.use(router);
@@ -39,11 +39,11 @@ function returnDataOr404(res, data) {
 }
 
 function readHelloMessage(req, res) {
-  res.send('Hello, Welcome to SpotOn!!!');
+  res.send("Hello, Welcome to SpotOn!!!");
 }
 
 function readUsers(req, res, next) {
-  db.many('SELECT * FROM Users')
+  db.many("SELECT * FROM Users")
     .then((data) => {
       res.send(data);
     })
@@ -53,7 +53,10 @@ function readUsers(req, res, next) {
 }
 
 function readUser(req, res, next) {
-  db.oneOrNone('SELECT * FROM Users WHERE emailAddress=${emailAddress}', req.params)
+  db.oneOrNone(
+    "SELECT * FROM Users WHERE emailAddress=${emailAddress}",
+    req.params,
+  )
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -73,7 +76,10 @@ function readUser(req, res, next) {
 // }
 
 function createUser(req, res, next) {
-  db.one('INSERT INTO Users(users_name, emailAddress, password) VALUES (${users_name}, ${emailAddress}, ${password}) RETURNING emailAddress', req.body)
+  db.one(
+    "INSERT INTO Users(users_name, emailAddress, password) VALUES (${users_name}, ${emailAddress}, ${password}) RETURNING emailAddress",
+    req.body,
+  )
     .then((data) => {
       res.send(data);
     })
