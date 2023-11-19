@@ -1,3 +1,5 @@
+// Configure the server and its routes.
+const express = require("express");
 const pgp = require("pg-promise")();
 
 const db = pgp({
@@ -7,10 +9,6 @@ const db = pgp({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
 });
-
-// Configure the server and its routes.
-
-const express = require("express");
 
 const app = express();
 const port = process.env.PORT || 3000;
