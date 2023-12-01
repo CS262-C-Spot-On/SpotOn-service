@@ -3,16 +3,23 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "lint": "eslint ."
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
+    "eslint-config-universe": "^12.0.0",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "pg": "^8.11.3",
     "pg-promise": "^11.5.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.53.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0"
   }
 }
