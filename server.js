@@ -19,10 +19,12 @@ router.use(express.json());
 router.get("/", readHelloMessage);
 router.get("/users", readUsers);
 router.get("/users/:emailAddress", readUser);
-// router.put("/users/:email", updateUser);
+router.put("/users/:email", updateUser);
 router.post("/users", createUser);
-// router.delete('/players/:id', deleteUser);
-
+router.delete('/users/:emailAddress', deleteUser);
+router.get("/prompts", readPrompts);
+router.get("/prompts/:emailAddress", readUsersPrompts);
+router.post("/prompts", createPrompt);
 app.use(router);
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
@@ -50,6 +52,26 @@ function readUsers(req, res, next) {
     });
 }
 
+function readPrompts(req, res, next) {
+  db.many("SELECT * FROM Prompts")
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function readUsersPrompts(req, res, next) {
+  db.many("SELECT * FROM Prompts WHERE Prompts.email = ${emailAddress}")
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 function readUser(req, res, next) {
   db.oneOrNone(
     "SELECT * FROM Users WHERE emailAddress=${emailAddress}",
@@ -63,19 +85,43 @@ function readUser(req, res, next) {
     });
 }
 
-// function updateUser(req, res, next) {
-//     db.oneOrNone('UPDATE Player SET email=${body.email}, name=${body.name} WHERE id=${params.id} RETURNING id', req)
-//         .then(data => {
-//             returnDataOr404(res, data);
-//         })
-//         .catch(err => {
-//             next(err);
-//         });
-// }
+function updateUser(req, res, next) {
+    db.oneOrNone('UPDATE Users SET emailAddress=${body.emailAddress}, users_name=${body.users_name}, password = ${password} WHERE id=${params.id} RETURNING id', req)
+        .then(data => {
+            returnDataOr404(res, data);
+        })
+        .catch(err => {
+            next(err);
+        });
+}
 
 function createUser(req, res, next) {
   db.one(
     "INSERT INTO Users(users_name, emailAddress, password) VALUES (${users_name}, ${emailAddress}, ${password}) RETURNING emailAddress",
+    req.body,
+  )
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function deleteUser(req, res, next) {
+  // Assuming 'emailAddress' is the primary key in your Users table
+  db.oneOrNone('DELETE FROM Users WHERE emailAddress=${emailAddress} RETURNING id', req.params)
+      .then(data => {
+          returnDataOr404(res, data);
+      })
+      .catch(err => {
+          next(err);
+      });
+}
+
+function createPrompt(req, res, next) {
+  db.one(
+    "INSERT INTO Prompts(prompt, email, prompt_date) VALUES (${prompt}, ${email}, ${prompt_date}) RETURNING prompt",
     req.body,
   )
     .then((data) => {
@@ -99,12 +145,3 @@ function createUser(req, res, next) {
 //   }
 // }
 
-// function deleteUser(req, res, next) {
-//     db.oneOrNone('DELETE FROM Player WHERE id=${id} RETURNING id', req.params)
-//         .then(data => {
-//             returnDataOr404(res, data);
-//         })
-//         .catch(err => {
-//             next(err);
-//         });
-// }
