@@ -63,8 +63,9 @@ function readPrompts(req, res, next) {
 }
 
 function readUsersPrompts(req, res, next) {
-  db.many("SELECT * FROM Prompts WHERE email = ${emailAddress}")
-    .then((data) => {
+  db.many("SELECT * FROM Prompts WHERE email = ${emailAddress}",
+  req.params,
+).then((data) => {
       res.send(data);
     })
     .catch((err) => {
