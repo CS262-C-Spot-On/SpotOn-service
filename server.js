@@ -39,7 +39,37 @@ function returnDataOr404(res, data) {
 }
 
 function readHelloMessage(req, res) {
-  res.send("Hello, Welcome to SpotOn!!!");
+  const htmlResponse = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welcome to SpotOn</title>
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+          }
+          h1 {
+            color: #3498db;
+          }
+          p {
+            color: #555;
+            font-size: 18px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Hello, Welcome to SpotOn!!!</h1>
+        <p>This is a fancier styled welcome message.</p>
+      </body>
+    </html>
+  `;
+
+  res.send(htmlResponse);
 }
 
 function readUsers(req, res, next) {
