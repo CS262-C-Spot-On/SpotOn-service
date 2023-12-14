@@ -62,7 +62,7 @@ function returnDataOr404(res, data) {
  * @param {Object} res - Express response object.
  */
 function readHelloMessage(req, res) {
-  res.send("Hello, Welcome to SpotOn!!!");
+  res.send("Hello, Welcome to SpotOn!");
 }
 
 /**
